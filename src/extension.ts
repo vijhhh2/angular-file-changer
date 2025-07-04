@@ -14,10 +14,10 @@ function getFileNameWithoutExtension(path: string) {
 
 function isNgRxKey(str: string) {
   switch (str) {
-    case 'actions':
-    case 'reducer':
-    case 'reducers':
-    case 'effects':
+    case "actions":
+    case "reducer":
+    case "reducers":
+    case "effects":
       return true;
     default:
       return false;
@@ -31,18 +31,18 @@ interface NgRxType {
 
 function getFileNameWithNgrxExtension(path: string, type: NgRxType) {
   let pathElements = path.split("/");
-  let fileName = pathElements.pop() || '';
-  let fileParent = pathElements.pop() || '';
+  let fileName = pathElements.pop() || "";
+  let fileParent = pathElements.pop() || "";
   if (isNgRxKey(fileParent)) {
     pathElements.push(type.pathName);
   } else {
     pathElements.push(fileParent);
   }
-  let fileNameElements = fileName.split('.') || '';
-  let fileExtension = fileNameElements.pop() || '';
-  let fileSecondaryExtension = fileNameElements.pop() || '';
+  let fileNameElements = fileName.split(".") || "";
+  let fileExtension = fileNameElements.pop() || "";
+  let fileSecondaryExtension = fileNameElements.pop() || "";
   if (fileSecondaryExtension === "spec") {
-    fileSecondaryExtension = fileNameElements.pop() || '';
+    fileSecondaryExtension = fileNameElements.pop() || "";
   }
   if (isNgRxKey(fileSecondaryExtension)) {
     fileNameElements.push(type.fileExtension);
@@ -50,9 +50,9 @@ function getFileNameWithNgrxExtension(path: string, type: NgRxType) {
     fileNameElements.push(fileSecondaryExtension);
   }
   fileNameElements.push(fileExtension);
-  let newFileName = fileNameElements.join('.');
+  let newFileName = fileNameElements.join(".");
   pathElements.push(newFileName);
-  return pathElements.join('/');
+  return pathElements.join("/");
 }
 
 let isSplit = vscode.workspace
@@ -71,7 +71,7 @@ function xOpenTextDocument(
 ): Promise<vscode.TextDocument> {
   return new Promise((resolve, reject) => {
     let opened = false;
-    vscode.window.visibleTextEditors.forEach(textEditor => {
+    vscode.window.visibleTextEditors.forEach((textEditor) => {
       if (textEditor.document.fileName === path) {
         opened = true;
         vscode.window
@@ -80,8 +80,8 @@ function xOpenTextDocument(
             () => {
               resolve(textEditor.document);
             },
-            err => {
-              reject(err);
+            (error) => {
+              reject(error);
             }
           );
       }
@@ -89,18 +89,18 @@ function xOpenTextDocument(
 
     if (!opened) {
       vscode.workspace.openTextDocument(path).then(
-        doc => {
+        (doc) => {
           vscode.window.showTextDocument(doc, viewColumn).then(
             () => {
               resolve(doc);
             },
-            err => {
-              reject(err);
+            (error) => {
+              reject(error);
             }
           );
         },
-        err => {
-          reject(err);
+        (error) => {
+          reject(error);
         }
       );
     }
@@ -112,8 +112,8 @@ function xOpenTextDocument(
 export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
-  console.log(
-    'Congratulations, your extension "angular-file-changer" is now active!'
+  console.info(
+    'Angular File Changer extension is now active!'
   );
 
   // The command has been defined in the package.json file
@@ -122,11 +122,6 @@ export function activate(context: vscode.ExtensionContext) {
   let cmdswitchHTML = vscode.commands.registerCommand(
     "extension.switchHTML",
     () => {
-      // The code you place here will be executed every time your command is executed
-
-      // Display a message box to the user
-      // vscode.window.showInformationMessage('Hello World!');
-
       if (!vscode.workspace) {
         return;
       }
@@ -145,9 +140,10 @@ export function activate(context: vscode.ExtensionContext) {
         isSplit ? vscode.ViewColumn.Two : editor.viewColumn
       ).then(
         () => {},
-        err => {
-          //vscode.workspace.findFiles('**∕*.js', '**∕node_modules∕**', 10);
-          vscode.window.showInformationMessage('Could not find file \'' + targetFile.split('/').pop() + '\'');
+        (_error) => {
+          vscode.window.showInformationMessage(
+            "Could not find file '" + targetFile.split("/").pop() + "'"
+          );
         }
       );
     }
@@ -174,8 +170,10 @@ export function activate(context: vscode.ExtensionContext) {
         isSplit ? vscode.ViewColumn.Two : editor.viewColumn
       ).then(
         () => {},
-        err => {
-          vscode.window.showInformationMessage('Could not find file \'' + targetFile.split('/').pop() + '\'');
+        (_error) => {
+          vscode.window.showInformationMessage(
+            "Could not find file '" + targetFile.split("/").pop() + "'"
+          );
         }
       );
     }
@@ -215,21 +213,23 @@ export function activate(context: vscode.ExtensionContext) {
           () => {
             return;
           },
-          err => {
+          (_error) => {
             numStyleExtensionsToCheck--;
             if (numStyleExtensionsToCheck === 0) {
-              vscode.window.showInformationMessage('Could not find file \'' + fileNameWithoutExtension.split('/').pop() + '\' with .css, .scss, .sass, or .less extension');
+              vscode.window.showInformationMessage(
+                "Could not find file '" +
+                  fileNameWithoutExtension.split("/").pop() +
+                  "' with .css, .scss, .sass, or .less extension"
+              );
             }
             next();
           }
         );
       }
-
       next();
     }
   );
 
-  // will jump *.spec.ts only current within *.ts
   let cmdswitchTest = vscode.commands.registerCommand(
     "extension.switchTest",
     () => {
@@ -246,14 +246,15 @@ export function activate(context: vscode.ExtensionContext) {
       const fileNameWithoutExtension = getFileNameWithoutExtension(currentFile);
       const targetFile = fileNameWithoutExtension + ".spec.ts";
 
-
       xOpenTextDocument(
         targetFile,
         isSplit ? vscode.ViewColumn.Two : editor.viewColumn
       ).then(
         () => {},
-        err => {
-          vscode.window.showInformationMessage('Could not find file \'' + targetFile.split('/').pop() + '\'');
+        (_error) => {
+          vscode.window.showInformationMessage(
+            "Could not find file '" + targetFile.split("/").pop() + "'"
+          );
         }
       );
     }
@@ -272,15 +273,20 @@ export function activate(context: vscode.ExtensionContext) {
       }
 
       const currentFile = editor.document.fileName;
-      const targetFile = getFileNameWithNgrxExtension(currentFile, { pathName: 'actions', fileExtension: 'actions' });
+      const targetFile = getFileNameWithNgrxExtension(currentFile, {
+        pathName: "actions",
+        fileExtension: "actions",
+      });
 
       xOpenTextDocument(
         targetFile,
         isSplit ? vscode.ViewColumn.Two : editor.viewColumn
       ).then(
         () => {},
-        err => {
-          vscode.window.showInformationMessage('Could not find file \'' + targetFile.split('/').pop() + '\'');
+        (_error) => {
+          vscode.window.showInformationMessage(
+            "Could not find file '" + targetFile.split("/").pop() + "'"
+          );
         }
       );
     }
@@ -299,15 +305,20 @@ export function activate(context: vscode.ExtensionContext) {
       }
 
       const currentFile = editor.document.fileName;
-      const targetFile = getFileNameWithNgrxExtension(currentFile, { pathName: 'effects', fileExtension: 'effects' });
+      const targetFile = getFileNameWithNgrxExtension(currentFile, {
+        pathName: "effects",
+        fileExtension: "effects",
+      });
 
       xOpenTextDocument(
         targetFile,
         isSplit ? vscode.ViewColumn.Two : editor.viewColumn
       ).then(
         () => {},
-        err => {
-          vscode.window.showInformationMessage('Could not find file \'' + targetFile.split('/').pop() + '\'');
+        (_error) => {
+          vscode.window.showInformationMessage(
+            "Could not find file '" + targetFile.split("/").pop() + "'"
+          );
         }
       );
     }
@@ -326,21 +337,34 @@ export function activate(context: vscode.ExtensionContext) {
       }
 
       const currentFile = editor.document.fileName;
-      const targetFile = getFileNameWithNgrxExtension(currentFile, { pathName: 'reducers', fileExtension: 'reducer' });
+      const targetFile = getFileNameWithNgrxExtension(currentFile, {
+        pathName: "reducers",
+        fileExtension: "reducer",
+      });
 
       xOpenTextDocument(
         targetFile,
         isSplit ? vscode.ViewColumn.Two : editor.viewColumn
       ).then(
         () => {},
-        err => {
-          vscode.window.showInformationMessage('Could not find file \'' + targetFile.split('/').pop() + '\'');
+        (_error) => {
+          vscode.window.showInformationMessage(
+            "Could not find file '" + targetFile.split("/").pop() + "'"
+          );
         }
       );
     }
   );
 
-  context.subscriptions.push(cmdswitchHTML, cmdswitchCSS, cmdswitchTypeScript, cmdswitchTest, cmdSwitchAction, cmdSwitchEffect, cmdSwitchReducer);
+  context.subscriptions.push(
+    cmdswitchHTML,
+    cmdswitchCSS,
+    cmdswitchTypeScript,
+    cmdswitchTest,
+    cmdSwitchAction,
+    cmdSwitchEffect,
+    cmdSwitchReducer
+  );
 }
 
 function* gen(files: string[], viewColumn: vscode.ViewColumn | undefined) {
@@ -349,5 +373,4 @@ function* gen(files: string[], viewColumn: vscode.ViewColumn | undefined) {
   }
 }
 
-// this method is called when your extension is deactivated
-export function deactivate() { }
+export function deactivate() {}

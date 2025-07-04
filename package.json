@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "angular-file-changer",
   "displayName": "Angular File Changer (Supporting Touch Bar and NgRx)",
   "description": "Easily navigate between typescript, template, style, and associated test files in your Angular project using the Mac Touch Bar.",
@@ -150,14 +151,19 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    "test": "npm run compile && node ./node_modules/vscode/bin/test",
+    "lint": "eslint src --ext .ts --no-ignore",
+    "lint:fix": "eslint src --ext .ts --fix --no-ignore"
   },
   "devDependencies": {
-    "typescript": "^2.6.1",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.3.3",
     "vscode": "^1.1.21",
-    "tslint": "^5.8.0",
-    "@types/node": "^8.10.25",
-    "@types/mocha": "^2.2.42"
+    "@vscode/vsce": "^2.24.0"
   },
   "repository": {
     "type": "git",

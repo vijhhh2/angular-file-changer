@@ -1,4 +1,4 @@
-## Angular File Changer (with Touch Bar and NgRx Intergration) Changelog
+## Angular File Changer (with Touch Bar and NgRx Integration) Changelog
 
 <a name="0.0.1"></a>
 
