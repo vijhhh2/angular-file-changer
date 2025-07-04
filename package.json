@@ -1,17 +1,16 @@
 {
-  "type": "module",
   "name": "angular-file-changer",
   "displayName": "Angular File Changer (Supporting Touch Bar and NgRx)",
   "description": "Easily navigate between typescript, template, style, and associated test files in your Angular project using the Mac Touch Bar.",
   "version": "0.0.3",
-  "publisher": "john-crowson",
+  "publisher": "Vijay",
   "author": {
-    "name": "John Crowson",
-    "url": "https://johncrowson.com"
+    "name": "Vijay Kumar",
+    "url": "https://vijaykumar.com"
   },
   "icon": "images/logo.png",
   "engines": {
-    "vscode": "^1.27.0"
+    "vscode": "^1.101.0"
   },
   "categories": [
     "Keymaps",
@@ -150,20 +149,24 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test",
+    "test": "npm run compile && vscode-test",
     "lint": "eslint src --ext .ts --no-ignore",
-    "lint:fix": "eslint src --ext .ts --fix --no-ignore"
+    "lint:fix": "eslint src --ext .ts --fix --no-ignore",
+    "package": "vsce package --allow-star-activation"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
+    "@types/mocha": "^10.0.10",
     "@types/node": "^20.11.0",
+    "@types/vscode": "^1.101.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.6.0",
     "eslint": "^9.0.0",
-    "typescript": "^5.3.3",
-    "vscode": "^1.1.21",
-    "@vscode/vsce": "^2.24.0"
+    "mocha": "^11.7.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   },
   "repository": {
     "type": "git",
